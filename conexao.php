@@ -1,3 +1,4 @@
 <?php
- $link = mysqli_connect('localhost', 'usuarioDoMysql', 'm1sqlA!B@C#', 'dbPindura1');
+ //$link = mysqli_connect('servidor', 'usuario', 'senha', 'banco');
+ $link = mysqli_connect('localhost', '', '', 'dbPindura1');
 

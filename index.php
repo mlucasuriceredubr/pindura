@@ -1,3 +1,4 @@
+<?php require 'init.php'; ?>
 <!doctype html>
 <html lang="pt_BR">
  <head>
@@ -9,8 +10,23 @@
  </head>
  <body>
   <h1>Sistema simples para controle informal de consumo</h1>
-  <h2><a href="listar.php" class="btn btn-light">Listar contas</a></h2>
-  <h2><a href="cadastrar.php" class="btn btn-light">Cadastrar uma nova pessoa</a></h2>
 
+    <?php
+    require 'login.php';
+	if (isset($Usuario)) {
+	    $a = "";
+	    if (isset($_GET)) if (isset($_GET['a'])) $a = $_GET['a'];
+	    if ($a=="listar") include 'listar.php';
+	    if ($a=="cadastrar") include 'cadastrar.php';
+	    if ($a=="") {
+	      ?>
+	      <h2><a href="?a=listar" class="btn btn-light">Listar contas</a></h2>
+	      <h2><a href="?a=cadastrar" class="btn btn-light">Cadastrar uma nova pessoa</a></h2>
+	      <h2><a href="logoff.php" class="btn btn-light">Sair do sistema</a></h2>
+	      <?php
+	    }
+	}
+    ?>
+ 
  </body>
 </html>

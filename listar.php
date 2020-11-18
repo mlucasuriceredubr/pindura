@@ -1,30 +1,25 @@
-<!doctype html>
-<html lang="pt_BR">
- <head>
-   <meta charset="utf-8">
-   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
-
-  <title>Software de controle informal de consumo | URI Erechim</title>
-
-  <style type="text/css">
-   .rounded-lg { border-radius: 1em !important; }
-  </style>
-
- </head>
- <body style=" padding: 5%; ">
-
-  <h1>Sistema simples para controle informal de consumo</h1>
-
-  <h2>Listagem de contas</h2>
-
+<a href="index.php" class="btn btn-success">&lt;- Voltar</a>
 <?php
-  require 'conexao.php';
+  if (!(isset($Usuario))) die();
+
+
+  if (isset($_GET['pago'])) {
+    $id = sanitizar($link, $_GET['id']);
+    $stmt = mysqli_prepare($link, "UPDATE Consumo set pago = 'S' WHERE id = ?");
+    mysqli_stmt_bind_param($stmt, "d", $id);
+    mysqli_stmt_execute($stmt);
+  }
+  if (isset($_GET['naopago'])) {
+    $id = sanitizar($link, $_GET['id']);
+    $stmt = mysqli_prepare($link, "UPDATE Consumo set pago = 'N' WHERE id = ?");
+    mysqli_stmt_bind_param($stmt, "d", $id);
+    mysqli_stmt_execute($stmt);
+  }
 
   $sql = "SELECT * FROM Pessoa ORDER BY nmPessoa";
   $qry = mysqli_query($link, $sql);
   while($Pessoa = mysqli_fetch_array($qry)) {
-   ?>
+?>
    <div class="mx-auto border border-primary rounded-lg" style=" padding: 2%; margin: 1%; ">
     <h3><?php echo $Pessoa['nmPessoa']; ?></h3>
     <div class="row">
@@ -56,8 +51,8 @@
 	 <td><?php echo $Consumo['descritivo']; ?></td>
          <td><?php echo $Consumo['valor']; ?></td>
          <td><?php echo $Consumo['pago']; ?></td>
-	 <td><a class="btn btn-default" href="pago.php?id=<?php echo $Consumo['id']; ?>">Marcar como pago</a>
-	 <a class="btn btn-default" href="naopago.php?id=<?php echo $Consumo['id']; ?>">Marcar como n&atilde;o pago</a></td>
+	 <td><a class="btn btn-default" href="?a=listar&pago=true&id=<?php echo $Consumo['id']; ?>">Marcar como pago</a>
+	 <a class="btn btn-default" href="?a=listar&naopago=true&id=<?php echo $Consumo['id']; ?>">Marcar como n&atilde;o pago</a></td>
         </tr>
         <?php
        }
@@ -71,8 +66,6 @@
      </tfoot>
     </table>
    </div>
-   <?php
+<?php
   }
 ?>
- </body>
-</html>

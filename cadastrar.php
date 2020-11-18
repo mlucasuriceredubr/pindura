@@ -1,29 +1,34 @@
-<!doctype html>
-<html lang="pt_BR">
- <head>
-   <meta charset="utf-8">
-   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+<a href="index.php" class="btn btn-success">&lt;- Voltar</a>
+<?php
+  if (!(isset($Usuario))) die();
 
-  <title>Software de controle informal de consumo | URI Erechim</title>
+  if (isset($_POST)) if (isset($_POST['btnCadastrar'])) {
+   $nome = sanitizar($link, $_POST['nome']);
+   $descr = sanitizar($link, $_POST['descr']);
+   $sql = "INSERT INTO Pessoa VALUES (0, '$nome', '$descr')";
+   $qry = mysqli_query($link, $sql);
+   if ($qry) {
+	?>
+	   Cadastro realizado com sucesso!
 
-  <style type="text/css">
-   .rounded-lg { border-radius: 1em !important; }
-  </style>
+	<script type="text/JavaScript">
+		setTimeout("location = 'index.php'",1000);
+	</script>
+	<a href="index.php">Clique aqui para voltar ao inicio</a>
+   <?php
 
- </head>
- <body style=" padding: 5%; ">
-
-  <h1>Sistema simples para controle informal de consumo</h1>
+   } else echo "houve um erro";
+  }
+?>
 
   <h2>Cadastrando nova pessoa</h2>
 
-  <form action="salvarcadastro.php" method="GET">
+  <form action="?a=cadastrar" method="POST">
    Nome da pessoa: <input type="text" id="nome" name="nome" />
    <br />
    Descri&ccedil;&atilde;o: <input type="text" id="descr" name="descr" />
    <br />
-   <input type="submit" value="Cadastrar" />
+   <input type="submit" value="Cadastrar" name='btnCadastrar' />
   </form>
  </body>
 </html>

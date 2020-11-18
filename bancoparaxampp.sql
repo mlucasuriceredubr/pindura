@@ -62,29 +62,37 @@ delimiter $$
 use `dbpindura2`$$
 create definer = current_user trigger `dbpindura2`.`pessoa_after_insert` after insert on `pessoa` for each row
 begin
+  declare id int default 0;
+  set @id := (select (max(idlog)+1) from logpessoa);
   insert into logpessoa (idlog, idpessoa, nmpessoa, dspessoa, acao) values
-  (0, new.idpessoa, new.nmpessoa, new.dspessoa, 'inserir');
+  (@id, new.idpessoa, new.nmpessoa, new.dspessoa, 'inserir');
 end$$
 
 use `dbpindura2`$$
 create definer = current_user trigger `dbpindura2`.`pessoa_before_update` before update on `pessoa` for each row
 begin
+  declare id int default 0;
+  set @id := (select (max(idlog)+1) from logpessoa);
   insert into logpessoa (idlog, idpessoa, nmpessoa, dspessoa, acao) values
-  (0, old.idpessoa, old.nmpessoa, old.dspessoa, 'tentou alterar');
+  (@id, old.idpessoa, old.nmpessoa, old.dspessoa, 'tentou alterar');
 end$$
 
 use `dbpindura2`$$
 create definer = current_user trigger `dbpindura2`.`pessoa_after_update` after update on `pessoa` for each row
 begin
+  declare id int default 0;
+  set @id := (select (max(idlog)+1) from logpessoa);
   insert into logpessoa (idlog, idpessoa, nmpessoa, dspessoa, acao) values
-  (0, new.idpessoa, new.nmpessoa, new.dspessoa, 'alterou para');
+  (@id, new.idpessoa, new.nmpessoa, new.dspessoa, 'alterou para');
 end$$
 
 use `dbpindura2`$$
 create definer = current_user trigger `dbpindura2`.`pessoa_before_delete` before delete on `pessoa` for each row
 begin
+  declare id int default 0;
+  set @id := (select (max(idlog)+1) from logpessoa);
   insert into logpessoa (idlog, idpessoa, nmpessoa, dspessoa, acao) values
-  (0, old.idpessoa, old.nmpessoa, old.dspessoa, 'excluiu');
+  (@id, old.idpessoa, old.nmpessoa, old.dspessoa, 'excluiu');
 end$$
 
 
